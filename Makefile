@@ -25,7 +25,8 @@ NON_STANDARD_IMAGES = web-wasm manylinux1-x64 manylinux1-x86 manylinux2010-x64 m
 DOCKER_COMPOSITE_SOURCES = common.docker common.debian common.manylinux common.crosstool common.windows common-manylinux.crosstool common.dockcross common.yocto
 
 # This list all available images
-IMAGES = $(STANDARD_IMAGES) $(NON_STANDARD_IMAGES)
+# IMAGES = $(STANDARD_IMAGES) $(NON_STANDARD_IMAGES)
+IMAGES = linux-x64
 
 # Optional arguments for test runner (test/run.py) associated with "testing implicit rule"
 linux-ppc64le.test_ARGS = --languages C
