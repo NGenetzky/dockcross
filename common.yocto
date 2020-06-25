@@ -4,19 +4,19 @@
 #ARG YOCTO_POKY_VERSION=X.X.X
 
 # TODO: Replace debian.common with more minimal package set.
-# https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#required-packages-for-the-build-host
-
-# Image build scripts
-COPY \
-  imagefiles/build-and-install-yocto-buildtools-nativesdk.sh \
-  imagefiles/utils.sh \
-  /buildscripts/
-
+# 2.6: https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#required-packages-for-the-build-host
+ARG YOCTO_APT_REQ="gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping"
+# setuptools required for to install kas with python3.
+# locales required to set LC_ALL for using bitbake.
+ARG YOCTO_APT_REQ_APPEND="python3-setuptools locales"
+ARG DEBIAN_FRONTEND=noninteractive
 RUN \
-  set -x && \
-  /buildscripts/build-and-install-yocto-buildtools-nativesdk.sh && \
-  rm -rf /buildscripts
-ENV PATH="/opt/yocto-buildtools/sysroots/x86_64-pokysdk-linux/usr/bin:$PATH"
+  apt-get update --yes && \
+  apt-get install --no-install-recommends --yes \
+    ${YOCTO_APT_REQ} \
+    ${YOCTO_APT_REQ_APPEND} \
+  && \
+  apt-get clean --yes
 
 ARG YOCTO_PYTHON_REQ="\
 kas==2.1.1 \
@@ -29,3 +29,8 @@ RUN \
   python3 -m pip install --no-cache-dir --disable-pip-version-check \
     ${YOCTO_PYTHON_REQ}
 
+# NOTE: requires 'locales' is installed ('apt install locales').
+RUN  sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
