@@ -1,0 +1,9 @@
+COPY \
+  imagefiles/build-and-install-yocto-buildtools-nativesdk.sh \
+  imagefiles/utils.sh \
+  /buildscripts/
+RUN \
+  set -x && \
+  /buildscripts/build-and-install-yocto-buildtools-nativesdk.sh && \
+  rm -rf /buildscripts
+ENV PATH="/opt/yocto-buildtools/sysroots/x86_64-pokysdk-linux/usr/bin:$PATH"
