@@ -16,4 +16,16 @@ RUN \
   set -x && \
   /buildscripts/build-and-install-yocto-buildtools-nativesdk.sh && \
   rm -rf /buildscripts
+ENV PATH="/opt/yocto-buildtools/sysroots/x86_64-pokysdk-linux/usr/bin:$PATH"
+
+ARG YOCTO_PYTHON_REQ="\
+kas==2.1.1 \
+PyYAML>=3.0 \
+distro>=1.0.0 \
+jsonschema>=2.5.0 \
+"
+RUN \
+  set -x && \
+  python3 -m pip install --no-cache-dir --disable-pip-version-check \
+    ${YOCTO_PYTHON_REQ}
 
