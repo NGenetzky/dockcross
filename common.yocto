@@ -1,0 +1,19 @@
+# TODO: Allow configuration
+#ARG YOCTO_VERSION=X.X.X
+#ARG YOCTO_KAS_VERSION=X.X.X
+#ARG YOCTO_POKY_VERSION=X.X.X
+
+# TODO: Replace debian.common with more minimal package set.
+# https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#required-packages-for-the-build-host
+
+# Image build scripts
+COPY \
+  imagefiles/build-and-install-yocto-buildtools-nativesdk.sh \
+  imagefiles/utils.sh \
+  /buildscripts/
+
+RUN \
+  set -x && \
+  /buildscripts/build-and-install-yocto-buildtools-nativesdk.sh && \
+  rm -rf /buildscripts
+
