@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 #
-# Configure, build and install OpenSSL
+# Fetch, unpack and install x86_64-buildtools-nativesdk-standalone
 #
 # Usage:
 #
-#  build-and-install-openssl.sh [-32]
+#  build-and-install-yocto-buildtools-nativesdk.sh
 #
 # Options:
 #
-#  -32              Build OpenSSL as a 32-bit library
 #
 # Notes:
 #
-#  * build directory is /usr/src/openssl-$OPENSSL_VERSION
+#  * build directory is /usr/src/
 #
-#  * install directory is /usr
+#  * install directory is /opt/yocto-buildtools/
 #
 #  * after installation, build directory and archive are removed
 #
@@ -22,61 +21,27 @@
 set -ex
 set -o pipefail
 
-WRAPPER=""
-CONFIG_FLAG=""
-
-while [ $# -gt 0 ]; do
-  case "$1" in
-    -32)
-      WRAPPER="linux32"
-      CONFIG_FLAG="-m32"
-      ;;
-    *)
-      echo "Usage: Usage: ${0##*/} [-32]"
-      exit 1
-      ;;
-  esac
-  shift
-done
-
 MY_DIR=$(dirname "${BASH_SOURCE[0]}")
 source $MY_DIR/utils.sh
 
-#
-# Function 'do_openssl_build' and 'build_openssl'
-# copied from https://github.com/pypa/manylinux/tree/master/docker/build_scripts
-#
+YOCTO_FNAME='x86_64-buildtools-nativesdk-standalone-2.6.4.sh'
+YOCTO_HASH='417634548a2e5448f775e1a5763025160d7a3f53188cb7797def0579a2965a4c'
+YOCTO_URL='https://downloads.yoctoproject.org/releases/yocto/yocto-2.6.4/buildtools/x86_64-buildtools-nativesdk-standalone-2.6.4.sh'
 
-OPENSSL_ROOT=openssl-1.0.2s
-# Hash from https://www.openssl.org/source/openssl-1.0.2s.tar.gz.sha256
-OPENSSL_HASH=cabd5c9492825ce5bd23f3c3aeed6a97f8142f606d893df216411f07d1abab96
+YOCTO_DEST='/opt/yocto-buildtools/'
 
-# XXX: the official https server at www.openssl.org cannot be reached
-# with the old versions of openssl and curl in Centos 5.11 hence the fallback
-# to the ftp mirror:
-OPENSSL_DOWNLOAD_URL=http://www.openssl.org/source/old/1.0.2/
-
-function do_openssl_build {
-    ${WRAPPER} ./config no-ssl2 no-shared -fPIC $CONFIG_FLAG --prefix=/usr/local/ssl > /dev/null
-    ${WRAPPER} make > /dev/null
-    ${WRAPPER} make install_sw > /dev/null
-}
-
-function build_openssl {
-    local openssl_fname=$1
-    check_var ${openssl_fname}
-    local openssl_sha256=$2
-    check_var ${openssl_sha256}
-    check_var ${OPENSSL_DOWNLOAD_URL}
+function build_yocto_buildtools_native {
+    local dest="$1"
+    check_var "${YOCTO_FNAME}"
+    check_var "${YOCTO_HASH}"
+    check_var "${YOCTO_URL}"
     # Can't use curl here because we don't have it yet
-    wget -q ${OPENSSL_DOWNLOAD_URL}/${openssl_fname}.tar.gz
-    check_sha256sum ${openssl_fname}.tar.gz ${openssl_sha256}
-    tar -xzf ${openssl_fname}.tar.gz
-    (cd ${openssl_fname} && do_openssl_build)
-    rm -rf ${openssl_fname} ${openssl_fname}.tar.gz
-    # Cleanup install tree
-    rm -rf /usr/ssl/man
+    wget -q "${YOCTO_URL}" -O "${YOCTO_FNAME}"
+    check_sha256sum "${YOCTO_FNAME}" "${YOCTO_HASH}"
+    chmod +x ${YOCTO_FNAME}
+    ( ./"${YOCTO_FNAME}" -y -d "${dest}" )
+    rm ${YOCTO_FNAME}
 }
 
 cd /usr/src
-build_openssl $OPENSSL_ROOT $OPENSSL_HASH
+build_yocto_buildtools_native "$YOCTO_DEST"
