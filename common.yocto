@@ -8,6 +8,9 @@ ARG YOCTO_APT_REQ="gawk wget git-core diffstat unzip texinfo gcc-multilib build-
 # setuptools required for to install kas with python3.
 # locales required to set LC_ALL for using bitbake.
 # 'file' is required "HOSTTOOL" for poky.
+# /poky-glibc-x86_64-core-image-sato-aarch64-toolchain-ext-2.6.4/
+# ERROR: The following required tools (as specified by HOSTTOOLS) appear to be unavailable in PATH, please install them in order to proceed:
+# ip ps scp ssh
 ARG YOCTO_APT_REQ_APPEND="python3-setuptools locales file"
 ARG YOCTO_PYTHON_REQ="\
 kas==2.1.1 \
