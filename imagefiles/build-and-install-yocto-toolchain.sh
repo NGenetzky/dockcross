@@ -66,9 +66,19 @@ function _install_yocto_toolchain {
     #   -R         Do not relocate executables
     #   -D         use set -x to see what is going on
     #   -l         list files that will be extracted
-    mkdir -p "$(dirname "${YOCTO_DEST}")"
+    local parent_dir
+    parent_dir="$(dirname "${YOCTO_DEST}")"
+    mkdir -p "${parent_dir}"
     ./"${YOCTO_FNAME}" -l
-    ./"${YOCTO_FNAME}" -y -d "${YOCTO_DEST}"
+
+    # WARNING: This is a hack to avoid installing as root
+    groupadd -o -g 777 pokybuild 2> /dev/null
+    useradd -o -m -g 777 -u 777 pokybuild 2> /dev/null
+    chown -R 777:777 "${parent_dir}"
+
+    su pokybuild -c "./\"${YOCTO_FNAME}\" -y -d \"${YOCTO_DEST}\""
+
+    chown -R 0:0 "${parent_dir}"
 }
 
 
