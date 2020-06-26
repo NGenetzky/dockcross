@@ -3,12 +3,19 @@
 #ARG YOCTO_KAS_VERSION=X.X.X
 #ARG YOCTO_POKY_VERSION=X.X.X
 
-# TODO: Replace debian.common with more minimal package set.
 # 2.6: https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#required-packages-for-the-build-host
 ARG YOCTO_APT_REQ="gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping"
 # setuptools required for to install kas with python3.
 # locales required to set LC_ALL for using bitbake.
-ARG YOCTO_APT_REQ_APPEND="python3-setuptools locales"
+# 'file' is required "HOSTTOOL" for poky.
+ARG YOCTO_APT_REQ_APPEND="python3-setuptools locales file"
+ARG YOCTO_PYTHON_REQ="\
+kas==2.1.1 \
+PyYAML>=3.0 \
+distro>=1.0.0 \
+jsonschema>=2.5.0 \
+"
+
 ARG DEBIAN_FRONTEND=noninteractive
 RUN \
   apt-get update --yes && \
@@ -17,13 +24,6 @@ RUN \
     ${YOCTO_APT_REQ_APPEND} \
   && \
   apt-get clean --yes
-
-ARG YOCTO_PYTHON_REQ="\
-kas==2.1.1 \
-PyYAML>=3.0 \
-distro>=1.0.0 \
-jsonschema>=2.5.0 \
-"
 RUN \
   set -x && \
   python3 -m pip install --no-cache-dir --disable-pip-version-check \
