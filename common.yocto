@@ -34,3 +34,14 @@ RUN  sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && loc
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
+
+COPY \
+  imagefiles/build-and-install-bitbake.sh \
+  /buildscripts/
+
+RUN \
+  set -x && \
+  /buildscripts/build-and-install-bitbake.sh && \
+  rm -rf /buildscripts
+
+# vim: set ft=Dockerfile:
