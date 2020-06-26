@@ -26,7 +26,7 @@ DOCKER_COMPOSITE_SOURCES = common.docker common.debian common.manylinux common.c
 
 # This list all available images
 # IMAGES = $(STANDARD_IMAGES) $(NON_STANDARD_IMAGES)
-IMAGES = linux-x64
+IMAGES = linux-x64 linux-arm64
 
 # Optional arguments for test runner (test/run.py) associated with "testing implicit rule"
 linux-ppc64le.test_ARGS = --languages C
