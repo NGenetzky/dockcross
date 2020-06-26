@@ -1,8 +1,22 @@
 FROM dockcross/base:latest
 
+COPY \
+  /imagefiles/build-and-install-yocto-toolchain.sh \
+  imagefiles/utils.sh \
+  /buildscripts/
+RUN \
+  set -x && \
+  /buildscripts/build-and-install-yocto-toolchain.sh 'poky-glibc-x86_64-core-image-sato-aarch64-toolchain-ext-2.6.4.sh' && \
+  rm -rf /buildscripts
+ENV PATH="/opt/yocto/2.6.4/buildtools/sysroots/x86_64-pokysdk-linux/usr/bin:$PATH"
+
 # This is for 64-bit ARM Linux machine
 
-#include "common.crosstool"
+# NOT include "common.NO.crosstool"
+
+# WARNING: I see the following warning during build.
+# mount: permission denied
+# update-binfmts: warning: Couldn't mount the binfmt_misc filesystem on /proc/sys/fs/binfmt_misc.
 
 # The cross-compiling emulator
 RUN apt-get update \

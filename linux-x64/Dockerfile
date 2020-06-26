@@ -7,6 +7,16 @@ RUN apt-get update && \
     libssl-dev \
     && apt-get clean --yes
 
+COPY \
+  /imagefiles/build-and-install-yocto-toolchain.sh \
+  imagefiles/utils.sh \
+  /buildscripts/
+RUN \
+  set -x && \
+  /buildscripts/build-and-install-yocto-toolchain.sh 'x86_64-buildtools-nativesdk-standalone-2.6.4.sh' && \
+  rm -rf /buildscripts
+ENV PATH="/opt/yocto/2.6.4/buildtools/sysroots/x86_64-pokysdk-linux/usr/bin:$PATH"
+
 ENV CROSS_TRIPLE x86_64-linux-gnu
 ENV CROSS_ROOT /usr/bin
 ENV AS=/usr/bin/${CROSS_TRIPLE}-as \
