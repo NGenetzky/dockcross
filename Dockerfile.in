@@ -1,9 +1,7 @@
 FROM debian:stretch-20190326-slim
 MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
-#include "common.debian"
-
-#include "common.docker"
+#include "common.dockcross"
 
 # Build-time metadata as defined at http://label-schema.org
 # Note: To avoid systematic rebuild of dependent images, only
