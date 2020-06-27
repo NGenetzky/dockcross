@@ -1,7 +1,43 @@
 FROM debian:stretch-20190326-slim
 MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
-#include "common.debian"
+# This block started with 'debian-9' from 'yocto-dockerfiles'
+# https://github.com/crops/yocto-dockerfiles/blob/63bd856e670a1ac8e1329f3083300d6e99d3f917/dockerfiles/debian/debian-9/debian-9-base/Dockerfile#L1
+RUN apt-get clean && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        gawk \
+        wget \
+        git-core \
+        subversion \
+        diffstat \
+        unzip \
+        sysstat \
+        texinfo \
+        gcc-multilib \
+        g++-multilib \
+        build-essential \
+        chrpath \
+        socat \
+        python \
+        python3 \
+        cpio \
+        xz-utils \
+        locales \
+        screen \
+        tmux \
+        sudo \
+        fluxbox \
+        procps \
+        tightvncserver && \
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
+    echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
+
+#include "common.dockcross"
 
 #include "common.yocto"
 
@@ -25,9 +61,6 @@ COPY ${CROSS_TRIPLE}-noop.sh /usr/bin/${CROSS_TRIPLE}-noop
 
 COPY Toolchain.cmake /usr/lib/${CROSS_TRIPLE}/
 ENV CMAKE_TOOLCHAIN_FILE /usr/lib/${CROSS_TRIPLE}/Toolchain.cmake
-
-# Runtime scripts
-COPY imagefiles/entrypoint.sh imagefiles/dockcross /dockcross/
 
 WORKDIR /work
 ENTRYPOINT ["/dockcross/entrypoint.sh"]
