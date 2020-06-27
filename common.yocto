@@ -46,6 +46,7 @@ RUN \
   /buildscripts/build-and-install-bitbake.sh && \
   rm -rf /buildscripts
 
-ENV PATH="/opt/yocto/poky/scripts:/opt/yocto/poky/bitbake/bin:${PATH}"
+# NOTE: This could be used to add them to path, but ussually you don't want that.
+# ENV PATH="/opt/yocto/poky/scripts:/opt/yocto/poky/bitbake/bin:${PATH}"
 
 # vim: set ft=Dockerfile:
