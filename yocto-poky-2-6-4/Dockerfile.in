@@ -69,7 +69,7 @@ ENTRYPOINT ["/dockcross/entrypoint.sh"]
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
-ARG IMAGE=dockcross/linux-x64
+ARG IMAGE=dockcross/yocto-poky-2-6-4
 ARG VERSION=latest
 ARG VCS_REF
 ARG VCS_URL
