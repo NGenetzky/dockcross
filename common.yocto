@@ -8,7 +8,9 @@ ARG YOCTO_APT_REQ="gawk wget git-core diffstat unzip texinfo gcc-multilib build-
 # setuptools required for to install kas with python3.
 # locales required to set LC_ALL for using bitbake.
 # 'file' is required "HOSTTOOL" for poky.
-ARG YOCTO_APT_REQ_APPEND="python3-setuptools locales file"
+# 'iproute2': 'ip' is required "HOSTTOOL" for poky.
+# 'iptables': 'iptables' is required to 'runqemu'
+ARG YOCTO_APT_REQ_APPEND="python3-setuptools locales file iproute2 iptables"
 ARG YOCTO_PYTHON_REQ="\
 kas==2.1.1 \
 PyYAML>=3.0 \
