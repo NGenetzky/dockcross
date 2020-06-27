@@ -37,15 +37,17 @@ RUN apt-get clean && \
     chmod 0600 /etc/vncskel/.vnc/passwd && \
     echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
-#include "common.dockcross"
-
 #include "common.yocto"
 
+# 'curl' was added for 'common.dockcross' build-install gosu
 RUN apt-get update && \
     apt-get -y install \
     libelf-dev \
     libssl-dev \
+    curl \
     && apt-get clean --yes
+
+#include "common.dockcross"
 
 ENV CROSS_TRIPLE x86_64-linux-gnu
 ENV CROSS_ROOT /usr/bin
