@@ -1,11 +1,9 @@
-FROM debian:stretch-20190326-slim
+FROM phusion/baseimage:0.11
 MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
 #include "common.debian"
 
 #include "common.dockcross"
-
-#include "common.docker"
 
 # Build-time metadata as defined at http://label-schema.org
 # Note: To avoid systematic rebuild of dependent images, only
