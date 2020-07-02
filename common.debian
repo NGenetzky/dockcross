@@ -43,11 +43,7 @@ RUN apt-get --quiet --yes update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Configuration for default non-root user.
-ARG USER_NAME='user'
-ARG USER_UID='1000'
-ARG USER_GID="$USER_UID"
-ARG USER_SHELL='/bin/bash'
+# Misc System level config
 RUN \
     # VNC
     cp -af /etc/skel/ /etc/vncskel/ && \
@@ -56,8 +52,20 @@ RUN \
     echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
     chmod 0600 /etc/vncskel/.vnc/passwd && \
     \
+    \
+    # Locales
+    /usr/sbin/locale-gen en_US.UTF-8 && \
+    \
+    echo 'dash dash/sh boolean false' | debconf-set-selections && \
+    DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
+# Configuration for default non-root user.
+ARG USER_NAME='user'
+ARG USER_UID='1000'
+ARG USER_GID="$USER_UID"
+ARG USER_SHELL='/bin/bash'
+RUN \
     # User configuration
-    useradd -U -m yoctouser && \
     printf "### Building image for user %s (%s:%s) ###" \
         "${USER_NAME}" \
         "${USER_UID}" \
@@ -68,10 +76,4 @@ RUN \
         "$USER_NAME" && \
     useradd --create-home --shell "${USER_SHELL}" \
         --uid "${USER_UID}" --gid "${USER_GID}" \
-        "${USER_NAME}" && \
-    \
-    # Locales
-    /usr/sbin/locale-gen en_US.UTF-8 && \
-    \
-    echo 'dash dash/sh boolean false' | debconf-set-selections && \
-    DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+        "${USER_NAME}"
