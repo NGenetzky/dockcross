@@ -5,6 +5,8 @@ MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
 #include "common.dockcross"
 
+ENTRYPOINT ["/sbin/my_init", "--quiet", "--skip-startup-files", "--", "/dockcross/entrypoint.sh"]
+
 # Build-time metadata as defined at http://label-schema.org
 # Note: To avoid systematic rebuild of dependent images, only
 #       name and vcs-url are included.
