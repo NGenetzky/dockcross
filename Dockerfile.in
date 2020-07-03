@@ -5,7 +5,10 @@ MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
 #include "common.dockcross"
 
-CMD ["/sbin/my_init", "--quiet", "--skip-startup-files", "--", "/dockcross/entrypoint.sh"]
+COPY imagefiles/entrypoint.py /sbin/entrypoint-dockcross
+# ENTRYPOINT ["/sbin/entrypoint-dockcross"]
+ENTRYPOINT ["/sbin/entrypoint-dockcross", "/dockcross/entrypoint.sh"]
+# CMD ["/sbin/my_init", "--quiet", "--skip-startup-files", "--", "/dockcross/entrypoint.sh"]
 
 # Build-time metadata as defined at http://label-schema.org
 # Note: To avoid systematic rebuild of dependent images, only
