@@ -1,11 +1,9 @@
 FROM phusion/baseimage:0.11
 MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
-#include "common.debian"
+#include "Dockerfile.bitbake"
 
 #include "common.dockcross"
-
-#include "Dockerfile.bitbake"
 
 ENTRYPOINT ["/sbin/my_init", "--quiet", "--skip-startup-files", "--", "/dockcross/entrypoint.sh"]
 
