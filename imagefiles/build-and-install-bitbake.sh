@@ -7,14 +7,13 @@ if ! command -v git &> /dev/null; then
 	exit 1
 fi
 
-YOCTO_ROOT='/opt/yocto'
+BITBAKE_ROOT='/opt/bitbake'
 mkdir -p \
-    "${YOCTO_ROOT}/build/conf" \
-    "${YOCTO_ROOT}/build/layers"
-cd "${YOCTO_ROOT}"
+    "${BITBAKE_ROOT}/conf" \
+    "${BITBAKE_ROOT}/layers"
+cd "${BITBAKE_ROOT}"
 
-KAS_POKY_VERSION="2.6.4"
-KAS_POKY_PATH="build/layers/yocto-${KAS_POKY_VERSION}/poky"
+BASE_LAYER_PATH="layers/meta-bb-ngenetzky"
 cat << EOF >> build/conf/kas.yml
 header:
   version: 8
@@ -22,14 +21,14 @@ env:
   SHELL: /bin/bash # NOTE: This isn't **really** needed, but I like bash.
 target: world
 repos:
-  poky:
-    url: "https://git.yoctoproject.org/git/poky"
-    refspec: "yocto-${KAS_POKY_VERSION}"
-    path: "${KAS_POKY_PATH}"
+  meta-bb-ngenetzky:
+    url: "https://github.com/NGenetzky/meta-bb-ngenetzky.git"
+    refspec: "2cbaa232df4b4f0cf1a0642ea7b1e5b0d48326b9"
+    path: "${BASE_LAYER_PATH}"
     layers:
-      meta:
-      meta-poky:
-      meta-yocto-bsp:
+      layers/meta-r0:
+      layers/meta-r1-bb:
+      layers/meta-r2-bitbake-yocto:
 EOF
 
 # This will fetch and set the 'conf' without performing a real build.
@@ -37,7 +36,7 @@ EOF
 kas shell build/conf/kas.yml -c 'bitbake-layers show-layers'
 
 # Clean up any unneccessary files
-git -C "${KAS_POKY_PATH}" \
+git -C "${BASE_LAYER_PATH}" \
   clean -fdx
 rm -rf \
   build/bitbake-cookerdaemon.log \
@@ -45,6 +44,5 @@ rm -rf \
   build/cache/ \
   build/tmp/
 
-# Use symlinks to provide consistent locations for bitbake and poky.
-ln -fsT "${KAS_POKY_PATH}" poky
-ln -fsT "${KAS_POKY_PATH}/bitbake" bitbake
+# Use symlink to provide consistent location for bitbake
+ln -fsT "${BASE_LAYER_PATH}/bitbake" bitbake
