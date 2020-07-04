@@ -6,8 +6,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN \
   apt-get update --yes && \
   apt-get install --no-install-recommends --yes \
-    python3-setuptools \
     python3-pip \
+    python3-setuptools \
+    git \
   && \
   apt-get clean --yes
 
