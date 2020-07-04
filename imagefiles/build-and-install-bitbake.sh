@@ -9,7 +9,7 @@ fi
 
 BITBAKE_ROOT='/opt/bitbake'
 mkdir -p \
-    "${BITBAKE_ROOT}/conf" \
+    "${BITBAKE_ROOT}/build/conf" \
     "${BITBAKE_ROOT}/layers"
 cd "${BITBAKE_ROOT}"
 
