@@ -1,0 +1,30 @@
+COPY \
+  imagefiles/build-and-install-bitbake.sh \
+  /buildscripts/
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN \
+  apt-get update --yes && \
+  apt-get install --no-install-recommends --yes \
+    python3-pip \
+    python3-setuptools \
+    git \
+  && \
+  apt-get clean --yes
+
+ARG YOCTO_PYTHON_REQ="\
+kas==2.1.1 \
+PyYAML>=3.0 \
+distro>=1.0.0 \
+jsonschema>=2.5.0 \
+"
+RUN \
+  set -x && \
+  python3 -m pip install --no-cache-dir --disable-pip-version-check \
+    ${YOCTO_PYTHON_REQ}
+RUN \
+  set -x && \
+  /buildscripts/build-and-install-bitbake.sh && \
+  rm -rf /buildscripts
+
+# vim: set ft=Dockerfile:
