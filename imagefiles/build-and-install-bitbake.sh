@@ -7,13 +7,13 @@ if ! command -v git &> /dev/null; then
 	exit 1
 fi
 
-BITBAKE_ROOT='/opt/bitbake'
+BITBAKE_ROOT='/opt/meta-bb'
 mkdir -p \
     "${BITBAKE_ROOT}/build/conf" \
-    "${BITBAKE_ROOT}/layers"
+    "${BITBAKE_ROOT}/build/layers"
 cd "${BITBAKE_ROOT}"
 
-BASE_LAYER_PATH="layers/meta-bb-ngenetzky"
+BASE_LAYER_PATH="build/layers/meta-bb-project-base"
 cat << EOF >> build/conf/kas.yml
 header:
   version: 8
@@ -21,14 +21,13 @@ env:
   SHELL: /bin/bash # NOTE: This isn't **really** needed, but I like bash.
 target: world
 repos:
-  meta-bb-ngenetzky:
-    url: "https://github.com/NGenetzky/meta-bb-ngenetzky.git"
-    refspec: "2cbaa232df4b4f0cf1a0642ea7b1e5b0d48326b9"
+  meta-bb-project-base:
+    url: "https://gitlab.com/ngenetzky/meta-bb-project-base.git"
+    refspec: "82ebf83e1cb4779dca16ea98bba19c1e17b0475b" # 2020-07-04
     path: "${BASE_LAYER_PATH}"
     layers:
       layers/meta-r0:
       layers/meta-r1-bb:
-      layers/meta-r2-bitbake-yocto:
 EOF
 
 # This will fetch and set the 'conf' without performing a real build.
@@ -45,4 +44,4 @@ rm -rf \
   build/tmp/
 
 # Use symlink to provide consistent location for bitbake
-ln -fsT "${BASE_LAYER_PATH}/bitbake" bitbake
+ln -fsT "meta-bb/${BASE_LAYER_PATH}/bitbake" /opt/bitbake
