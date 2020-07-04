@@ -5,6 +5,11 @@ MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
 #include "common.dockcross"
 
+RUN \
+  ln -s -T  \
+    /opt/meta-bb/build/layers/meta-bb-project-base/oe-init-build-env \
+    /dockcross/environment.sh
+
 ENTRYPOINT ["/sbin/my_init", "--quiet", "--skip-startup-files", "--", "/dockcross/entrypoint.sh"]
 
 # Build-time metadata as defined at http://label-schema.org

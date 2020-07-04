@@ -45,6 +45,10 @@ if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
        gosu $BUILDER_UID:$BUILDER_GID /work/.dockcross
     fi
 
+    if [[ -e /dockcross/environment.sh ]]; then
+        source /dockcross/environment.sh
+    fi
+
     # Run the command as the specified user/group.
     exec gosu $BUILDER_UID:$BUILDER_GID "$@"
 else
