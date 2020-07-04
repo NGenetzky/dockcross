@@ -18,7 +18,7 @@ cat << EOF >> build/conf/kas.yml
 header:
   version: 8
 env:
-  SHELL: /bin/bash # NOTE: This isn't **really** needed, but I like bash.
+  SHELL: /bin/bash
 target: world
 repos:
   meta-bb-project-base:
