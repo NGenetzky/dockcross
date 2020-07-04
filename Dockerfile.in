@@ -5,7 +5,7 @@ MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
 #include "common.dockcross"
 
-#include "common.yocto"
+#include "Dockerfile.bitbake"
 
 ENTRYPOINT ["/sbin/my_init", "--quiet", "--skip-startup-files", "--", "/dockcross/entrypoint.sh"]
 
