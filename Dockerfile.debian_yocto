@@ -1,0 +1,77 @@
+# Reference:
+# https://github.com/crops/yocto-dockerfiles/blob/344ac54cba52bbca3a47fb89b5db1469a54e8d8f/dockerfiles/ubuntu/ubuntu-18.04/ubuntu-18.04-base/Dockerfile#L1
+
+RUN apt-get --quiet --yes update && \
+    # We first install these packages
+    # 'apt-utils dialog' to avoid skipping package configuration
+    apt-get -y install --no-install-recommends \
+        apt-utils \
+        dialog \
+    && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        # yocto-dockerfiles package list.
+        gawk \
+        wget \
+        git-core \
+        subversion \
+        diffstat \
+        unzip \
+        sysstat \
+        texinfo \
+        gcc-multilib \
+        g++-multilib \
+        build-essential \
+        chrpath \
+        socat \
+        python \
+        python3 \
+        xz-utils  \
+        locales \
+        cpio \
+        screen \
+        tmux \
+        sudo \
+        iputils-ping \
+        iproute2 \
+        fluxbox \
+        tightvncserver \
+    && \
+    # Clean up
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Misc System level config
+RUN \
+    # VNC
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
+    \
+    \
+    # Locales
+    /usr/sbin/locale-gen en_US.UTF-8 && \
+    \
+    echo 'dash dash/sh boolean false' | debconf-set-selections && \
+    DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
+# Configuration for default non-root user.
+ARG USER_NAME='user'
+ARG USER_UID='1000'
+ARG USER_GID="$USER_UID"
+ARG USER_SHELL='/bin/bash'
+RUN \
+    # User configuration
+    printf "### Building image for user %s (%s:%s) ###" \
+        "${USER_NAME}" \
+        "${USER_UID}" \
+        "${USER_GID}" && \
+    #
+    # Create a non-root user.
+    groupadd --gid "$USER_GID" \
+        "$USER_NAME" && \
+    useradd --create-home --shell "${USER_SHELL}" \
+        --uid "${USER_UID}" --gid "${USER_GID}" \
+        "${USER_NAME}"
