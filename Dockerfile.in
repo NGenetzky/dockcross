@@ -1,7 +1,7 @@
 FROM phusion/baseimage:0.11
 MAINTAINER Matt McCormick "matt.mccormick@kitware.com"
 
-#include "common.debian"
+#include "Dockerfile.debian_yocto"
 
 #include "common.dockcross"
 
