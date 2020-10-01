@@ -13,13 +13,16 @@ mkdir -p \
     "${YOCTO_ROOT}/build/layers"
 cd "${YOCTO_ROOT}"
 
-KAS_POKY_VERSION="2.6.4"
-KAS_POKY_PATH="build/layers/yocto-${KAS_POKY_VERSION}/poky"
+# Latest LTS release
+_DEFAULT_KAS_POKY_VERSION="3.1.2"
+
+KAS_POKY_VERSION="${_DEFAULT_KAS_POKY_VERSION-${_DEFAULT_KAS_POKY_VERSION}}"
+KAS_POKY_PATH="build/layers/poky"
 cat << EOF >> build/conf/kas.yml
 header:
   version: 8
 env:
-  SHELL: /bin/bash # NOTE: This isn't **really** needed, but I like bash.
+  SHELL: /bin/bash
 target: world
 repos:
   poky:
@@ -44,7 +47,3 @@ rm -rf \
   build/bitbake.lock \
   build/cache/ \
   build/tmp/
-
-# Use symlinks to provide consistent locations for bitbake and poky.
-ln -fsT "${KAS_POKY_PATH}" poky
-ln -fsT "${KAS_POKY_PATH}/bitbake" bitbake
