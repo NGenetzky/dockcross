@@ -7,7 +7,7 @@ if ! command -v git &> /dev/null; then
 	exit 1
 fi
 
-BITBAKE_ROOT='/opt/meta-bb'
+BITBAKE_ROOT='/opt/bitbake'
 mkdir -p \
     "${BITBAKE_ROOT}/build/conf" \
     "${BITBAKE_ROOT}/build/layers"
@@ -42,6 +42,3 @@ rm -rf \
   build/bitbake.lock \
   build/cache/ \
   build/tmp/
-
-# Use symlink to provide consistent location for bitbake
-ln -fsT "meta-bb/${BASE_LAYER_PATH}/bitbake" /opt/bitbake
