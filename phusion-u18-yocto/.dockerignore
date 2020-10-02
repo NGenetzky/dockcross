@@ -1,0 +1,7 @@
+*
+
+!imagefiles/build-and-install-bitbake.sh
+!imagefiles/entrypoint.sh
+!imagefiles/install-gosu-binary-wrapper.sh
+!imagefiles/install-gosu-binary.sh
+!imagefiles/dockcross
