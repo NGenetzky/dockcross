@@ -35,3 +35,84 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url=$VCS_URL \
       org.label-schema.schema-version="1.0"
 ENV DEFAULT_DOCKCROSS_IMAGE ${IMAGE}:${VERSION}
+
+# https://github.com/lkcamp/lkcamp-kerneltools/blob/master/slim/Dockerfile
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        bc                           \
+        flex                         \
+        bison                        \
+        build-essential              \
+        git                          \
+        libncurses-dev               \
+        libssl-dev                   \
+        libelf-dev                   \
+        u-boot-tools                 \
+        wget                         \
+        xz-utils                     \
+        qemu-kvm                     \
+        iproute2                     \
+        python3                      \
+        python3-pip                  \
+        python3-setuptools           \
+        vim                          \
+        libmailtools-perl            \
+        libauthen-sasl-perl          \
+        git-email                    \
+        libauthen-sasl-perl          \
+        libmime-base64-urlsafe-perl  \
+    && apt-get autoremove -y  && apt-get clean -y  && rm -rf /var/lib/apt/lists/* \
+    && pip3 install git+https://github.com/ezequielgarcia/virtme.git
+
+# https://github.com/lkcamp/lkcamp-kerneltools/blob/master/slim-v4l/Dockerfile
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        exuberant-ctags    \
+        less               \
+        cscope             \
+        strace             \
+        dh-autoreconf      \
+        autotools-dev      \
+        doxygen            \
+        gettext            \
+        graphviz           \
+        libasound2-dev     \
+        libtool            \
+        libjpeg-dev        \
+        qtbase5-dev        \
+        libudev-dev        \
+        libx11-dev         \
+        qt5-default        \
+        meson              \
+        kmod               \
+        tig                \
+        bash-completion    \
+        debhelper          \
+        dh-autoreconf      \
+        autotools-dev      \
+        autoconf-archive   \
+        doxygen            \
+        graphviz           \
+        libasound2-dev     \
+        libtool            \
+        libjpeg-dev        \
+        libqt5opengl5-dev  \
+        libudev-dev        \
+        libx11-dev         \
+        pkg-config         \
+        udev               \
+        make               \
+        gcc                \
+        git                \
+        ninja-build        \
+        v4l-utils          \
+        strace             \
+    && apt-get autoremove -y  && apt-get clean -y  && rm -rf /var/lib/apt/lists/* \
+    && pip3 install --user \
+        git-pw
+
+# Build-time metadata as defined at http://label-schema.org
+ARG IMAGE=local/dockcross-lkcamp
+ENV DEFAULT_DOCKCROSS_IMAGE ${IMAGE}:${VERSION}
