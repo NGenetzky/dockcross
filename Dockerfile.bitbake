@@ -60,5 +60,6 @@ RUN \
 # Python can't change the filesystem locale after loading so we need a UTF-8 when Python starts or things won't work.
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
+ENV SHELL=/bin/bash
 
 # vim: set ft=Dockerfile:
