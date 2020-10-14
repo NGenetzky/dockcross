@@ -27,6 +27,8 @@ windows:
   - window_name: main
     focus: True
     layout: main-horizontal
+    options:
+      main-pane-height: 35
     panes:
     - shell_command:
       - kas build '/tmp/kas.yml'
