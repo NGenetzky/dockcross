@@ -1,0 +1,2 @@
+#!/bin/bash
+./bin/dockcross-base tmux new -s main1 -t main
