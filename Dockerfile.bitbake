@@ -62,4 +62,8 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV SHELL=/bin/bash
 
+COPY \
+  imagefiles/pre_exec_tmuxp_kas.bash \
+  /dockcross/pre_exec.sh
+
 # vim: set ft=Dockerfile:
