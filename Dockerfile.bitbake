@@ -42,7 +42,14 @@ RUN \
     tmuxp==1.5.6
 
 # NOTE: tmuxp requires 'LC_ALL and LANG' to be set.
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
+# ENV LC_ALL=C.UTF-8
+# ENV LANG=C.UTF-8
+
+# NOTE: bitbake or kas requires:
+# Please use a locale setting which supports UTF-8 (such as LANG=en_US.UTF-8).
+# Python can't change the filesystem locale after loading so we need a UTF-8 when Python starts or things won't work.
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+
 
 # vim: set ft=Dockerfile:
