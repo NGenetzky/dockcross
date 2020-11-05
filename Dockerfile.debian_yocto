@@ -59,22 +59,3 @@ RUN \
   set -x && \
   python3 -m pip install --no-cache-dir --disable-pip-version-check \
     ${YOCTO_PYTHON_REQ}
-
-# Configuration for default non-root user.
-ARG USER_NAME='user'
-ARG USER_UID='1000'
-ARG USER_GID="$USER_UID"
-ARG USER_SHELL='/bin/bash'
-RUN \
-    # User configuration
-    printf "### Building image for user %s (%s:%s) ###" \
-        "${USER_NAME}" \
-        "${USER_UID}" \
-        "${USER_GID}" && \
-    #
-    # Create a non-root user.
-    groupadd --gid "$USER_GID" \
-        "$USER_NAME" && \
-    useradd --create-home --shell "${USER_SHELL}" \
-        --uid "${USER_UID}" --gid "${USER_GID}" \
-        "${USER_NAME}"
