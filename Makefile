@@ -7,7 +7,7 @@
 DOCKER = docker
 
 # Docker organization to pull the images from
-ORG = dockcross
+ORG = ngenetzky
 
 # Directory where to generate the dockcross script for each images (e.g bin/dockcross-manylinux1-x64)
 BIN = ./bin
