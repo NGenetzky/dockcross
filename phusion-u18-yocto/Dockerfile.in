@@ -4,8 +4,6 @@ FROM phusion/baseimage:bionic-1.0.0
 
 #include "common.dockcross"
 
-#include "Dockerfile.bitbake"
-
 ENTRYPOINT ["/sbin/my_init", "--quiet", "--skip-startup-files", "--", "/dockcross/entrypoint.sh"]
 WORKDIR /work/
 
