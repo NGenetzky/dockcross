@@ -1,0 +1,84 @@
+{
+	// devcontainer.json for phusion-ngenetzky
+	//
+	// TODO: Get folder-uri working, such as this example
+	// https://github.com/microsoft/vscode-remote-release/issues/190
+	// code-insiders --folder-uri "vscode-remote://ssh-remote+host/path/to/project"
+	//
+	// References:
+	// - See https://aka.ms/vscode-remote/devcontainer.json for format details.
+	// - https://code.visualstudio.com/docs/remote/containers#_devcontainerjson-reference
+	// - https://code.visualstudio.com/docs/remote/containers-advanced
+	"name": "dockcross-phusion",
+
+
+	// vsc-docker-image-only # NOTE: dockerfile or image only
+	// "image": "node", // "dockerFile": "Dockefile", // "context": "",
+	// "workspaceMount": "source=${localWorkspaceFolder}/sub-folder,target=/workspace,type=bind,consistency=delegated",
+	// "workspaceFolder": "/workspace",
+	// "mounts": [
+	// 	"source=${localWorkspaceFolder},target=/workspace/,type=bind",
+	// 	"source=vsc-2020-04-01,target=/home/user/.vscode-server/extensions,type=volume",
+	// ],
+	// "updateRemoteUserUID": false,
+	// containerEnv property to devcontainer.json to set variables that should apply to the entire container.
+	// "containerEnv": { "C_VAR1": "C_VAL1", "C_VAR2": "${localEnv:L_VAR1}" },
+	// remoteEnv to set variables for VS Code and related sub-processes (terminals, tasks, debugging, etc).
+	// "remoteEnv": { "PATH": "${containerEnv:PATH}:/some/other/path", "R_VAR1": "some-other-value-here", "R_VAR2": "${localEnv:L_VAR1}" }
+
+
+	// vsc-docker-compose-only
+	// https://github.com/microsoft/vscode-dev-containers/blob/master/container-templates/docker-compose/.devcontainer/devcontainer.json
+		"dockerComposeFile": [
+		"../docker-compose.yml",
+		// "./docker-compose.yml",
+	],
+	"service": "main",
+	// NOTE: This setting is important and changes how you use the container:
+	// "shutdownAction": "none", // "none" if you want your containers running after VS Code shuts down.
+	// "remoteEnv": { "PATH": "${containerEnv:PATH}:/some/other/path", "R_VAR1": "r_val1", "R_VAR2": "${localEnv:L_VAR1}" }
+	"remoteEnv": {
+		"BUILDER_UID": "${localEnv:UID}",
+		"BUILDER_GID": "${localEnv:GID}",
+	},
+
+
+	// vsc-docker
+	"containerUser": "root", // WARNING: phusion must run as root
+	"remoteUser": "user", // Container user VS Code should use when connecting
+	// "shutdownAction": "none",
+	"workspaceFolder": "/work/",
+
+	// vsc-docker-general
+	// "postCreateCommand": [],
+	// "initializeCommand": [],
+	// "forwardPorts": [],
+	// "dev": [],
+
+	// "extensions": [
+	// 	"Braver.vscode-solarized",
+	// 	"CoenraadS.bracket-pair-colorizer",
+	// 	"PKief.material-icon-theme",
+	// 	"YoshinoriN.current-file-path",
+	// 	"alefragnani.Bookmarks",
+	// 	"alefragnani.project-manager",
+	// 	"chrislajoie.vscode-modelines",
+	// 	"codezombiech.gitignore",
+	// 	"eamodio.gitlens",
+	// 	"emilast.LogFileHighlighter",
+	// 	"fabiospampinato.vscode-terminals",
+	// 	"letmaik.git-tree-compare",
+	// 	"ms-python.python",
+	// 	"ms-vscode.cpptools",
+	// 	"ryuta46.multi-command",
+	// 	"vscodevim.vim",
+	// 	"yzhang.markdown-all-in-one",
+	// 	"redhat.vscode-yaml",
+	// 	"marklarah.pre-commit-vscode",
+	// 	"austin.code-gnu-global",
+	// 	"davidanson.vscode-markdownlint",
+	// 	"donjayamanne.githistory"
+	// ],
+	// "settings":  {},
+
+}
