@@ -1,0 +1,58 @@
+version: '3'
+services:
+  main:
+    command: ['sleep', 'infinity']
+    # command: ['jupyter', 'notebook', '--ip', '0.0.0.0', '--port', '8888']
+
+    # user: user # phusion must run as root
+    privileged: true
+    # user: user # NOTE: phusion must run as root
+    environment:
+    # - "HOME=/home/user/" # NOTE: phusion will ignore HOME.
+    - BUILDER_UID
+    - BUILDER_GID
+
+    # https://medium.com/@vanuan/ssh-and-docker-compose-7bce10b67765
+    - SSH_AUTH_SOCK
+
+    # image: "ngenetzky/phusion-u18-yocto:20201027-0d13b58"
+    build: ./
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
+
+    volumes:
+    #  For ssh auth
+    # - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+
+    # You can mount volume to persist homedirectory
+    - home_vol:/home/
+
+    # You can bind mount current directory as read-only reference.
+    # - ./:/mnt/pwd/:ro
+    - ./:/repo/:ro
+
+    # You can bind mount current directory as workspace
+    # - ./:/home/user/workspace/
+    # - ./:/workspace/
+    - ./:/work/
+
+    # Forwards the host Docker socket to the container.
+    # - /var/run/docker.sock:/var/run/docker.sock
+
+    # You can mount a 'tmpfs' for performance
+    - cache_vol:/var/tmp
+
+    # ports:
+      # Only expose port 22 to localhost
+      # - "127.0.0.1:10022:22"
+
+      # Expose 8888 to localhost for jupyter
+      # - "127.0.0.1:8888:8888"
+
+volumes:
+  home_vol:
+  cache_vol:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
