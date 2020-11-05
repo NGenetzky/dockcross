@@ -40,6 +40,8 @@ RUN \
         --uid "${USER_UID}" --gid "${USER_GID}" \
         "${USER_NAME}"
 
+COPY ./rootfs/ /
+
 ENV BUILDER_USER='user'
 ENV BUILDER_UID="$USER_UID"
 ENV BUILDER_GID="$USER_UID"

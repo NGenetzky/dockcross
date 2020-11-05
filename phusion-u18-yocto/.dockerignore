@@ -5,3 +5,4 @@
 !imagefiles/install-gosu-binary-wrapper.sh
 !imagefiles/install-gosu-binary.sh
 !imagefiles/dockcross
+!imagefiles/pre_exec_tmuxp_kas.bash
