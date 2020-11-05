@@ -48,6 +48,22 @@ RUN \
     echo 'dash dash/sh boolean false' | debconf-set-selections && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
+# python3 installs
+ARG YOCTO_PYTHON_REQ="\
+kas==2.2 \
+PyYAML>=3.0 \
+distro>=1.0.0 \
+jsonschema>=2.5.0 \
+"
+RUN \
+  set -x && \
+  python3 -m pip install --no-cache-dir --disable-pip-version-check \
+    ${YOCTO_PYTHON_REQ}
+RUN \
+  set -x && \
+  /buildscripts/build-and-install-bitbake.sh && \
+  rm -rf /buildscripts
+
 # Configuration for default non-root user.
 ARG USER_NAME='user'
 ARG USER_UID='1000'
