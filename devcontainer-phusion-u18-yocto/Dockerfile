@@ -45,3 +45,18 @@ COPY ./rootfs/ /
 ENV BUILDER_USER='user'
 ENV BUILDER_UID="$USER_UID"
 ENV BUILDER_GID="$USER_UID"
+
+ARG YOCTO_APT_REQ_PETALINUX_2020="autoconf libncurses5-dev libtool libtool-bin net-tools zlib1g-dev zlib1g:i386 rsync"
+ARG UBUNTU_MIRROR='archive.ubuntu.com'
+#install dependences:
+RUN set -x \
+  sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list && \
+    dpkg --add-architecture i386 && \
+    apt-get --quiet --yes update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+        ${YOCTO_APT_REQ_PETALINUX_2020} \
+    && \
+    # Clean up
+    apt-get autoremove -y && \
+    apt-get clean --yes && \
+    rm -rf /var/lib/apt/lists/*
