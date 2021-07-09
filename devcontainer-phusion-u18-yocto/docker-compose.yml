@@ -43,6 +43,8 @@ services:
     # You can mount a 'tmpfs' for performance
     - cache_vol:/var/tmp
 
+    - /opt/Xilinx/petalinux:/opt/Xilinx/petalinux
+
     # ports:
       # Only expose port 22 to localhost
       # - "127.0.0.1:10022:22"
